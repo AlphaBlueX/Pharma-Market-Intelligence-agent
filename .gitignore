@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+build/
+dist/
+*.egg-info/
+
+# Environment Variables
+.env
+.env.*
+!.env.template
+
+# Large Data & Cache
+data/
+hf_cache/
+*.log
+backend.log
+ui.log
+init.log
+backend_err.log
+ui_err.log
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

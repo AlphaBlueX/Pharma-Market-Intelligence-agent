@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+python-dotenv
+sentence-transformers
+faiss-cpu
+google-generativeai
+transformers
+torch
+accelerate
+streamlit
+pandas
+requests
+plotly
+beautifulsoup4
+lxml

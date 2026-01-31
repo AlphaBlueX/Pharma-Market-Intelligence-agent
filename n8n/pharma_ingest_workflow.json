@@ -1,0 +1,87 @@
+{
+  "name": "Pharma Market Ingest Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "e44d3204-7a91-4e78-bc41-2cba67848e4b",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        380,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://newsapi.org/v2/everything?q=pharmaceutical+market+launch&apiKey=f0db9525dc0a4cc785aa352694636d4f",
+        "options": {}
+      },
+      "id": "ec8b4069-267e-48a8-9155-369b9cf56ccf",
+      "name": "Fetch Pharma News",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        600,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/ingest",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "items",
+              "value": "={{ $json.articles.map(a => ({ title: a.title, text: a.description + ' ' + a.content, source: a.source.name, date: a.publishedAt })) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a18b4069-267e-48a8-9155-369b9cf56cd0",
+      "name": "Post to Backend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        820,
+        240
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch Pharma News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Pharma News": {
+      "main": [
+        [
+          {
+            "node": "Post to Backend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
